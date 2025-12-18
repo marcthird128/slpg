@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <argon2.h>
 #include <openssl/sha.h>
+#include <sys/mman.h>
 
 int main() {
 	printf("slpg utility\n");
@@ -30,6 +31,7 @@ int main() {
 	// Get master password
 	char* master = getpass("enter master: ");
 	ssize_t masterlen = strlen(master);
+	mlock(master, masterlen);
 
 	// Calculate hash
 	uint8_t hash[32];
@@ -48,24 +50,29 @@ int main() {
 		printf("argon2 encoding error: %i (0x%x)\n", result, result);
 		return -1;
 	}
+	mlock(hash, 32);
 
 	// Format output
 	printf("\nhash output:\n");
 	for (int i=0; i<32; i++) {
-		uint8_t b = hash[i];
-		uint8_t l = b & 15;
-		uint8_t h = b >> 4;
-		printf("%x%x", l, h);
+		if (i == 0) printf("!1");
+		else if (i == 1) printf("Aa");
+		else {
+			uint8_t b = hash[i];
+			uint8_t l = b & 15;
+			uint8_t h = b >> 4;
+			printf("%x%x", l, h);
+		}
 	}
 	printf("\n");
 
 	// Zero-out buffers
-	for (int i=0; i<masterlen; i++) {
-		master[i] = 0;
-	}
-	for (int i=0; i<32; i++) {
-		hash[i] = 0;
-	}
+	void* (*volatile scrub)(void*, int, size_t) = memset;
+	scrub(master, 0, masterlen);
+	scrub(hash, 0, 32);
+	munlock(master, masterlen);
+	munlock(hash, 32);
 
+	// Success
 	return 0;
 }

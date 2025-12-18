@@ -28,7 +28,7 @@ The algorithm is as follows:
     as the main input to generate a 32-byte buffer. Call this the `hash`.
  3. Treat the `hash` as a big-endian 256-bit number, convert to standard 
     hexadecimal, pad with zeros to make it 64 characters long, reverse the
-    string, and then output it.
+    string, replace first four chars with `!1Aa`, and then output it.
 
 ## Security
 
@@ -52,5 +52,5 @@ Here is example input to verify your slpg executable:
 
 Salt: `hello`
 Master: `world`
-Output: `62d6c38b8ac33848df367188634107373dae0809a54957af42baa248700fb774`
+Output: `!1Aac38b8ac33848df367188634107373dae0809a54957af42baa248700fb774`
 
