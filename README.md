@@ -45,3 +45,12 @@ Included is a reference implementation written in C. To compile it, run
 The output will be the executable `slpg`. Run it with no arguments. It will
 prompt you for the salt text and the master password, and will output in
 the correct format.
+
+## Verification
+
+Here is example input to verify your slpg executable:
+
+Salt: `hello`
+Master: `world`
+Output: `62d6c38b8ac33848df367188634107373dae0809a54957af42baa248700fb774`
+

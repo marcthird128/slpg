@@ -1,2 +1,2 @@
 #!/bin/bash
-gcc main.c -largon2 -lcrypto -o slpg
+gcc main.c -o slpg -static -largon2 -lcrypto -lpthread -ldl
