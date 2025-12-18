@@ -1,18 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
+#include <unistd.h>
 #include <argon2.h>
 #include <openssl/sha.h>
 
 int main() {
 	printf("slpg utility\n");
 	
-	char* salt = NULL;
-	char* master = NULL;
-
-	size_t dummy; // Size not needed
-	
 	// Get salt
+	char* salt = NULL;
+	size_t dummy; // Size not needed
 	printf("enter salt: ");
 	ssize_t saltlen = getline(&salt, &dummy, stdin);
 	if (saltlen == -1) {
@@ -29,13 +28,8 @@ int main() {
 	SHA256_Final(hashedsalt, &sha256);
 
 	// Get master password
-	printf("enter master: ");
-	ssize_t masterlen = getline(&master, &dummy, stdin);
-	if (masterlen == -1) {
-		printf("getline failed\n");
-		return -1;
-	}
-	if (masterlen > 0 && master[masterlen-1] == '\n') master[--masterlen] = '\0';
+	char* master = getpass("enter master: ");
+	ssize_t masterlen = strlen(master);
 
 	// Calculate hash
 	uint8_t hash[32];
