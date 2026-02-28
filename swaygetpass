@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Script to get passwords in Sway
+
+SALT=$(wofi --dmenu --lines 1)
+MASTER=$(wofi --dmenu --password --lines 1)
+
+PASSW=$(echo $SALT; echo $MASTER | ./slpg)
+
+if [ -n "$PASSW" ]; then
+	sleep 0.2
+	wtype "$PASSW"
+fi
