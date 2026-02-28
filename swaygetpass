@@ -5,9 +5,8 @@
 SALT=$(wofi --dmenu --lines 1 2>/dev/null)
 MASTER=$(wofi --dmenu --password --lines 1 2>/dev/null)
 
-PASSW=$(printf "%s\n%s\n" "$SALT" "$MASTER" | ./slpg)
+PASSW=$(printf "%s\n%s\n" "$SALT" "$MASTER" | slpg)
 
 if [ -n "$PASSW" ]; then
-	sleep 0.2
 	wtype "$PASSW"
 fi
