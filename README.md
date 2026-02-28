@@ -44,7 +44,8 @@ Included is a reference implementation written in C. To compile it, run
 
 The output will be the executable `slpg`. Run it with no arguments. It will
 prompt you for the salt text and the master password, and will output in
-the correct format.
+the correct format. If run with a script (i.e. not a tty), it will output
+nothing but the final formatted hash.
 
 ## Verification
 
